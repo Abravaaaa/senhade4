@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Santander - Segurança</title>
+    <title>Agibank - Segurança</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         
+        :root {
+            --agi-blue: #002D51;
+            --agi-green: #29D381;
+            --agi-light-gray: #F4F7F9;
+        }
+
         body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Inter', sans-serif;
+            background-color: #e5e7eb;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -26,39 +32,40 @@
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
-        .santander-red { background-color: #EC0000; }
-        .text-santander-red { color: #EC0000; }
-
-        .header-shadow {
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
+        .agi-bg-blue { background-color: var(--agi-blue); }
+        .agi-text-blue { color: var(--agi-blue); }
+        .agi-bg-green { background-color: var(--agi-green); }
+        .agi-text-green { color: var(--agi-green); }
 
         .dot-container {
             display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 40px 0;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 30px 0;
         }
 
         .dot-field {
-            width: 45px;
-            height: 55px;
-            border-bottom: 2px solid #ced4da;
+            flex: 1;
+            height: 60px;
+            background-color: var(--agi-light-gray);
+            border-radius: 12px;
+            border: 2px solid transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            color: #444;
+            color: var(--agi-blue);
             transition: all 0.2s ease;
         }
 
         .dot-field.active {
-            border-bottom: 3px solid #EC0000;
-            color: #EC0000;
+            border-color: var(--agi-green);
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(41, 211, 129, 0.1);
         }
 
         #hidden-input {
@@ -68,76 +75,82 @@
             left: -100%;
         }
 
-        .btn-confirmar {
-            background-color: #EC0000;
-            color: white;
-            font-weight: 600;
-            padding: 16px;
+        .btn-agi {
+            background-color: var(--agi-green);
+            color: var(--agi-blue);
+            font-weight: 700;
+            padding: 18px;
             width: 100%;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-            text-transform: uppercase;
-            font-size: 14px;
-            letter-spacing: 1px;
+            border-radius: 16px;
+            transition: all 0.3s;
+            font-size: 16px;
         }
 
-        .btn-confirmar:disabled {
-            background-color: #f8baba;
+        .btn-agi:disabled {
+            background-color: #d1d5db;
+            color: #9ca3af;
             cursor: not-allowed;
         }
 
-        .safe-icon-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
+        .update-card {
+            background: linear-gradient(135deg, #002D51 0%, #004a85 100%);
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 30px;
         }
 
-        .shake {
-            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        .pulse {
+            animation: pulse-animation 2s infinite;
         }
 
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
+        @keyframes pulse-animation {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
 <body onclick="focusInput()">
 
     <div class="phone-container">
-        <!-- Barra de Status Mock -->
-        <div class="px-6 py-2 flex justify-between items-center text-[12px] font-bold text-gray-500">
-            <span>9:41</span>
-            <div class="flex gap-1">
-                <i data-lucide="signal" class="w-3 h-3"></i>
-                <i data-lucide="wifi" class="w-3 h-3"></i>
-                <i data-lucide="battery" class="w-3 h-3"></i>
+        <!-- Status Bar -->
+        <div class="px-6 py-2 flex justify-between items-center text-[12px] font-bold text-gray-400">
+            <span>12:45</span>
+            <div class="flex gap-1.5">
+                <i data-lucide="signal" class="w-3.5 h-3.5"></i>
+                <i data-lucide="wifi" class="w-3.5 h-3.5"></i>
+                <i data-lucide="battery" class="w-3.5 h-3.5"></i>
             </div>
         </div>
 
-        <!-- Header Santander -->
-        <div class="header-shadow bg-white p-4 flex items-center justify-between">
-            <button class="p-1">
-                <i data-lucide="arrow-left" class="w-6 h-6 text-santander-red"></i>
+        <!-- Header -->
+        <div class="p-4 flex items-center">
+            <button class="p-2 bg-gray-100 rounded-full">
+                <i data-lucide="chevron-left" class="w-6 h-6 agi-text-blue"></i>
             </button>
-            <div class="flex items-center gap-1">
-                <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M50 0C22.3858 0 0 22.3858 0 50C0 77.6142 22.3858 100 50 100C77.6142 100 100 77.6142 100 50C100 22.3858 77.6142 0 50 0ZM50 85C30.67 85 15 69.33 15 50C15 30.67 30.67 15 50 15C69.33 15 85 30.67 85 50C85 69.33 69.33 85 50 85Z" fill="#EC0000"/>
-                    <path d="M50 30C38.9543 30 30 38.9543 30 50C30 61.0457 38.9543 70 50 70C61.0457 70 70 61.0457 70 50C70 38.9543 61.0457 30 50 30Z" fill="#EC0000"/>
-                </svg>
-                <span class="text-santander-red italic font-black text-xl tracking-tighter">Santander</span>
+            <div class="flex-grow flex justify-center pr-10">
+                <span class="agi-text-blue font-black text-2xl tracking-tight">agi</span>
             </div>
-            <div class="w-8"></div> <!-- Spacer -->
         </div>
 
-        <!-- Conteúdo Principal -->
-        <div class="flex-grow px-8 pt-10">
-            <h1 class="text-[22px] font-bold text-gray-800 leading-tight">Segurança do Banco</h1>
-            <p class="text-gray-500 text-sm mt-3 leading-relaxed">
-                Para sua segurança e do seu dispositivo, informe sua <span class="font-bold text-gray-700">senha de 6 dígitos</span> para validar este acesso.
+        <!-- Main Content -->
+        <div class="flex-grow px-6 pt-6">
+            <div class="update-card shadow-lg">
+                <div class="flex items-start gap-4">
+                    <div class="bg-white/20 p-3 rounded-xl">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-lg">Proteção Ativa</h2>
+                        <p class="text-white/80 text-xs">Mantenha seu aparelho seguro atualizando suas credenciais de acesso.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="text-2xl font-bold agi-text-blue leading-tight">Confirmar Senha</h1>
+            <p class="text-gray-500 text-sm mt-2">
+                Digite sua senha de acesso de <span class="font-bold">6 dígitos</span> para validar a segurança do dispositivo.
             </p>
 
             <div class="relative">
@@ -160,39 +173,30 @@
                 >
             </div>
 
-            <div class="safe-icon-container">
-                <div class="bg-gray-50 p-4 rounded-full mb-2">
-                    <i data-lucide="shield-check" class="w-10 h-10 text-emerald-500"></i>
-                </div>
-                <span class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Conexão Criptografada</span>
+            <div class="mt-8 flex items-center justify-center gap-2 text-gray-400">
+                <i data-lucide="lock" class="w-4 h-4"></i>
+                <span class="text-[11px] uppercase font-bold tracking-widest">Ambiente 100% Seguro</span>
             </div>
         </div>
 
-        <!-- Rodapé com Botão -->
-        <div class="p-8">
-            <button id="confirm-btn" disabled class="btn-confirmar shadow-lg">
-                Confirmar Senha
+        <!-- Footer -->
+        <div class="p-6">
+            <button id="confirm-btn" disabled class="btn-agi shadow-md active:scale-[0.98]">
+                VALIDAR ACESSO
             </button>
-            <p class="text-center text-xs text-gray-400 mt-6">
-                Esqueceu sua senha? <span class="text-santander-red font-bold">Toque aqui</span>
+            <p class="text-center text-sm text-gray-500 mt-6 font-medium">
+                Precisa de ajuda? <span class="agi-text-green font-bold">Fale conosco</span>
             </p>
         </div>
     </div>
 
     <script>
-        // Inicialização
+        // Inicialização de ícones
         lucide.createIcons();
+        
         const input = document.getElementById('hidden-input');
-        const dots = [
-            document.getElementById('dot-0'),
-            document.getElementById('dot-1'),
-            document.getElementById('dot-2'),
-            document.getElementById('dot-3'),
-            document.getElementById('dot-4'),
-            document.getElementById('dot-5')
-        ];
+        const dots = Array.from({length: 6}, (_, i) => document.getElementById(`dot-${i}`));
         const btn = document.getElementById('confirm-btn');
-        const wrapper = document.getElementById('dot-wrap');
 
         function focusInput() {
             input.focus();
@@ -201,16 +205,13 @@
         input.addEventListener('input', (e) => {
             let val = e.target.value;
             
-            // Limitar a 6 dígitos
-            if (val.length > 6) {
-                val = val.slice(0, 6);
-                input.value = val;
-            }
+            // Forçar apenas números e limite de 6
+            val = val.replace(/\D/g, '').slice(0, 6);
+            input.value = val;
 
-            // Atualizar UI dos campos
             dots.forEach((dot, index) => {
                 if (index < val.length) {
-                    dot.innerText = val[index]; // VISÍVEL como pedido
+                    dot.innerText = val[index]; // Dígito VISÍVEL
                     dot.classList.add('active');
                 } else {
                     dot.innerText = '';
@@ -218,11 +219,10 @@
                 }
             });
 
-            // Habilitar botão
             btn.disabled = val.length !== 6;
         });
 
-        // Impede caracteres não numéricos
+        // Bloqueia teclas especiais no input numérico
         input.addEventListener('keydown', (e) => {
             if (["e", "E", "+", "-", ".", ","].includes(e.key)) {
                 e.preventDefault();
@@ -230,22 +230,25 @@
         });
 
         btn.addEventListener('click', () => {
-            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto"></i>';
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<div class="flex items-center justify-center gap-2"><i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> PROCESSANDO...</div>';
             lucide.createIcons();
             btn.disabled = true;
 
             setTimeout(() => {
-                // Simulação de sucesso ou erro (aqui coloquei feedback visual)
-                btn.classList.remove('santander-red');
-                btn.style.backgroundColor = '#10b981';
-                btn.innerText = 'VALIDADO';
+                btn.style.backgroundColor = '#002D51';
+                btn.style.color = '#ffffff';
+                btn.innerHTML = '<div class="flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> SUCESSO</div>';
+                lucide.createIcons();
                 
-                // Feedback tátil visual se fosse erro
-                // wrapper.classList.add('shake');
-            }, 1800);
+                // Redirecionamento ou feedback final após sucesso
+                setTimeout(() => {
+                    btn.innerHTML = "APARELHO ATUALIZADO";
+                }, 1500);
+            }, 2000);
         });
 
-        // Garantir foco inicial
+        // Foco automático ao carregar
         window.onload = () => {
             setTimeout(focusInput, 500);
         };
